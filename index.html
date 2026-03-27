@@ -1,5 +1,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Japan 2026">
+<meta name="theme-color" content="#C62828">
+<title>Japan Reiseplan 2026</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 .w{font-family:var(--font-sans);color:var(--color-text-primary);padding-bottom:3rem}
@@ -634,6 +638,60 @@ tabs.forEach(function(t){
     window.scrollTo({top:0,behavior:'smooth'});
   });
 });
+
+// App Icon generieren
+(function(){
+  var c=document.createElement('canvas');
+  c.width=180;c.height=180;
+  var x=c.getContext('2d');
+
+  // Hintergrund dunkelrot
+  x.fillStyle='#C62828';
+  x.fillRect(0,0,180,180);
+
+  // Weißer Kreis (wie JP Flagge)
+  x.fillStyle='rgba(255,255,255,0.12)';
+  x.beginPath();x.arc(90,90,75,0,Math.PI*2);x.fill();
+
+  // Torii Gate – weiß
+  x.fillStyle='#fff';
+
+  // Kasagi – oberster geschwungener Balken
+  x.beginPath();
+  x.moveTo(22,62);x.quadraticCurveTo(90,44,158,62);
+  x.lineTo(158,74);x.quadraticCurveTo(90,56,22,74);
+  x.closePath();x.fill();
+
+  // Shimagi – kleiner Balken obendrauf
+  x.fillRect(72,46,36,14);
+
+  // Nuki – zweiter Querbalken
+  x.fillRect(52,88,76,11);
+
+  // Linker Pfosten
+  x.fillRect(58,72,16,78);
+
+  // Rechter Pfosten
+  x.fillRect(106,72,16,78);
+
+  // Text "JP 2026"
+  x.fillStyle='rgba(255,255,255,0.9)';
+  x.font='bold 13px sans-serif';
+  x.textAlign='center';
+  x.fillText('JAPAN 2026',90,166);
+
+  // Als Apple Touch Icon setzen
+  var lnk=document.createElement('link');
+  lnk.rel='apple-touch-icon';
+  lnk.href=c.toDataURL('image/png');
+  document.head.appendChild(lnk);
+
+  // Auch als normales Favicon
+  var fav=document.createElement('link');
+  fav.rel='icon';fav.type='image/png';
+  fav.href=c.toDataURL('image/png');
+  document.head.appendChild(fav);
+})();
 
 var packData=[
   {cat:"Dokumente & Geld",items:["Reisepass (gültig!)","Flugtickets ausdrucken / digital","Hotelbestätigungen","Reiseversicherung","Kreditkarte & Bargeld (€200 zum Wechseln)","Notfallnummern notiert"]},
