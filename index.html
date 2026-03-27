@@ -1,0 +1,695 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+.w{font-family:var(--font-sans);color:var(--color-text-primary);padding-bottom:3rem}
+.cover{position:relative;height:240px;border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:14px}
+.cover img{width:100%;height:100%;object-fit:cover;display:block}
+.cover-ov{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.05) 0%,rgba(0,0,0,0.72) 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:16px}
+.cover-title{font-size:24px;font-weight:500;color:#fff;line-height:1.2}
+.cover-sub{font-size:13px;color:rgba(255,255,255,0.8);margin-top:4px}
+.cover-ref{display:inline-block;margin-top:8px;font-size:11px;color:rgba(255,255,255,0.7);background:rgba(255,255,255,0.15);border-radius:var(--border-radius-md);padding:2px 9px}
+.ctags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.ctag{padding:3px 9px;border-radius:var(--border-radius-md);font-size:11px;font-weight:500;background:rgba(255,255,255,0.18);color:#fff}
+.tabwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-bottom:0.5px solid var(--color-border-tertiary);margin-bottom:18px}
+.tabs{display:flex;white-space:nowrap;min-width:max-content}
+.tab{padding:10px 14px;font-size:13px;cursor:pointer;background:none;border:none;border-bottom:2px solid transparent;color:var(--color-text-secondary);font-family:var(--font-sans)}
+.tab.on{color:var(--color-text-primary);font-weight:500;border-bottom-color:#C62828}
+.sec{display:none}.sec.on{display:block}
+.stitle{font-size:15px;font-weight:500;margin-bottom:12px}
+.cbanner{position:relative;height:170px;border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:18px}
+.cbanner img{width:100%;height:100%;object-fit:cover;display:block}
+.cbanner-ov{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:14px}
+.cbanner-title{font-size:20px;font-weight:500;color:#fff}
+.cbanner-sub{font-size:12px;color:rgba(255,255,255,0.78);margin-top:3px}
+.img-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px}
+.ig{position:relative;height:100px;border-radius:var(--border-radius-md);overflow:hidden;background:var(--color-background-secondary)}
+.ig img{width:100%;height:100%;object-fit:cover;display:block}
+.ig-lbl{position:absolute;bottom:0;left:0;right:0;padding:5px 8px;background:linear-gradient(transparent,rgba(0,0,0,0.65));font-size:10px;font-weight:500;color:#fff}
+.fgrid{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:14px}
+.fc{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:13px;background:var(--color-background-primary)}
+.fm{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:6px;flex-wrap:wrap}
+.fn{font-size:12px;color:var(--color-text-secondary)}
+.fbadge{font-size:10px;padding:2px 8px;border-radius:var(--border-radius-md);font-weight:500}
+.fr{display:flex;align-items:center;gap:8px}
+.fp{text-align:center;min-width:52px}
+.ft{font-size:17px;font-weight:500}
+.fport{font-size:11px;color:var(--color-text-secondary);margin-top:1px}
+.fl{flex:1;position:relative;border-top:1px solid var(--color-border-secondary)}
+.fd{position:absolute;top:-9px;left:50%;transform:translateX(-50%);font-size:10px;color:var(--color-text-secondary);background:var(--color-background-primary);padding:0 4px;white-space:nowrap}
+.fnote{font-size:11px;color:var(--color-text-secondary);margin-top:8px;border-top:0.5px solid var(--color-border-tertiary);padding-top:7px}
+.warn{background:var(--color-background-warning);border:0.5px solid var(--color-border-warning);border-radius:var(--border-radius-md);padding:11px 13px;font-size:13px;color:var(--color-text-warning);margin-bottom:16px;line-height:1.6}
+.hgrid{display:grid;grid-template-columns:1fr;gap:9px;margin-bottom:18px}
+.hcard{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;background:var(--color-background-primary)}
+.hcard-body{padding:12px}
+.hcity{display:inline-block;padding:2px 9px;border-radius:var(--border-radius-md);font-size:11px;font-weight:500;margin-bottom:7px}
+.hname{font-size:14px;font-weight:500}
+.hdates{font-size:12px;color:var(--color-text-secondary);margin-top:3px}
+.ovt-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg)}
+.ovt{width:100%;border-collapse:collapse;font-size:12px;min-width:460px}
+.ovt th{text-align:left;padding:8px 10px;background:var(--color-background-secondary);font-size:11px;font-weight:500;color:var(--color-text-secondary);border-bottom:1px solid var(--color-border-secondary)}
+.ovt td{padding:7px 10px;border-bottom:0.5px solid var(--color-border-tertiary);line-height:1.4;vertical-align:middle}
+.ovt tr:last-child td{border-bottom:none}
+.day-lbl{display:flex;align-items:center;gap:8px;padding:14px 0 7px;flex-wrap:wrap}
+.day-lbl-n{font-size:11px;font-weight:500;padding:3px 10px;border-radius:999px;flex-shrink:0}
+.day-lbl-t{font-size:15px;font-weight:500;flex:1}
+.day-lbl-d{font-size:11px;color:var(--color-text-secondary);white-space:nowrap}
+.dc{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);margin-bottom:16px;overflow:hidden;background:var(--color-background-primary)}
+.dimg{position:relative;height:145px;overflow:hidden}
+.dimg img{width:100%;height:100%;object-fit:cover;display:block}
+.dimg-ov{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:12px}
+.dnum-pill{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;background:rgba(255,255,255,0.22);margin-bottom:5px;width:fit-content}
+.dnum-n{font-size:12px;font-weight:500;color:#fff}
+.dnum-d{font-size:11px;color:rgba(255,255,255,0.85)}
+.dimg-title{font-size:15px;font-weight:500;color:#fff;line-height:1.3}
+.dimg-sub{font-size:11px;color:rgba(255,255,255,0.78);margin-top:2px}
+.db{padding:12px 14px}
+.tr2{display:grid;grid-template-columns:58px 1fr;gap:8px;padding:7px 0;border-bottom:0.5px solid var(--color-border-tertiary);align-items:start}
+.tr2:last-child{border-bottom:none}
+.tt{font-size:11px;font-weight:500;color:var(--color-text-secondary);padding-top:3px;display:flex;align-items:center;gap:4px}
+.dot{width:6px;height:6px;border-radius:50%;background:#C62828;flex-shrink:0}
+.tc{font-size:13px;line-height:1.5}
+.tc strong{font-weight:500}
+.tn{font-size:11px;color:var(--color-text-secondary);margin-top:2px;line-height:1.4}
+.chip{display:inline-block;background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:1px 6px;font-size:10px;color:var(--color-text-secondary);margin-top:3px}
+.ml{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:var(--color-background-info);border-radius:50%;margin-left:5px;text-decoration:none;vertical-align:middle;flex-shrink:0}
+.extras{border-top:0.5px solid var(--color-border-tertiary)}
+.ec{padding:11px 14px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.ec:last-child{border-bottom:none}
+.etitle{font-size:10px;font-weight:500;color:var(--color-text-secondary);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:7px}
+.ei{font-size:12px;line-height:1.5;padding:4px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+.ei:last-child{border-bottom:none}
+.ei strong{font-weight:500}
+.hks{display:flex;gap:10px;padding:10px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+.hks:last-child{border-bottom:none}
+.hkn{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0;margin-top:1px}
+.hkt{font-size:13px;font-weight:500;margin-bottom:3px;line-height:1.3;display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.hkd{font-size:12px;color:var(--color-text-secondary);line-height:1.6}
+.hkd strong{color:var(--color-text-primary);font-weight:500}
+.atsec{margin-bottom:20px}
+.athead{display:inline-block;padding:3px 11px;border-radius:var(--border-radius-md);font-size:12px;font-weight:500;margin-bottom:10px}
+.acard{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px 12px;margin-bottom:7px;background:var(--color-background-primary)}
+.aname{font-size:13px;font-weight:500;display:flex;align-items:center;gap:4px}
+.aen{font-size:12px;color:var(--color-text-secondary);margin-top:1px}
+.ajrow{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-top:6px;padding-top:6px;border-top:0.5px solid var(--color-border-tertiary)}
+.ajp{font-size:15px}
+.aaddr{font-size:11px;color:var(--color-text-secondary);text-align:right;line-height:1.3}
+.trt-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);margin-bottom:20px}
+.trt{width:100%;border-collapse:collapse;font-size:12px;min-width:400px}
+.trt th{text-align:left;padding:8px 10px;background:var(--color-background-secondary);font-size:11px;font-weight:500;color:var(--color-text-secondary);border-bottom:1px solid var(--color-border-secondary)}
+.trt td{padding:8px 10px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.trt tr:last-child td{border-bottom:none}
+.hrow{background:var(--color-background-warning)}
+.ti{display:flex;gap:10px;padding:10px 13px;border-bottom:0.5px solid var(--color-border-tertiary);font-size:13px;line-height:1.5}
+.ti:last-child{border-bottom:none}
+.tinum{width:24px;height:24px;border-radius:50%;background:var(--color-background-info);color:var(--color-text-info);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;margin-top:1px}
+.pack-cat{padding:9px 12px;font-size:10px;font-weight:500;color:var(--color-text-secondary);letter-spacing:0.5px;text-transform:uppercase;background:var(--color-background-secondary);border-bottom:0.5px solid var(--color-border-tertiary)}
+.pack-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:0.5px solid var(--color-border-tertiary);cursor:pointer;user-select:none}
+.pack-item:last-child{border-bottom:none}
+.pack-cb{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--color-border-secondary);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background 0.15s}
+.pack-cb.done{background:#1D9E75;border-color:#1D9E75}
+.pack-cb svg{display:none}
+.pack-cb.done svg{display:block}
+.pack-text{font-size:13px;line-height:1.4;flex:1}
+.pack-text.done{color:var(--color-text-secondary);text-decoration:line-through}
+.pack-prog{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:0.5px solid var(--color-border-tertiary);background:var(--color-background-secondary)}
+.pack-bar-bg{flex:1;height:5px;background:var(--color-border-tertiary);border-radius:999px;overflow:hidden}
+.pack-bar-fill{height:100%;background:#1D9E75;border-radius:999px;transition:width 0.2s}
+.phrase-row{display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:0.5px solid var(--color-border-tertiary)}
+.phrase-row:last-child{border-bottom:none}
+.phrase-row div{padding:8px 10px;font-size:12px;line-height:1.4}
+.phrase-row div:nth-child(2){font-size:14px}
+.phrase-row div:nth-child(3){color:var(--color-text-secondary);font-style:italic}
+</style>
+
+<div class="w">
+
+<div class="cover">
+  <img src="https://images.unsplash.com/photo-1542051841857-5f90071e7989?q=80&w=1170&auto=format&fit=crop" alt="Japan">
+  <div class="cover-ov">
+    <div class="cover-title">Japan 2026</div>
+    <div class="cover-sub">Tim &amp; Franziska · 06.–17. April 2026</div>
+    <div class="cover-ref">Ref: YVHP3R</div>
+    <div class="ctags">
+      <span class="ctag">Tokyo 06–10.04</span>
+      <span class="ctag">Hakone 10–11.04</span>
+      <span class="ctag">Kyoto 11–16.04</span>
+    </div>
+  </div>
+</div>
+
+<div class="tabwrap">
+  <div class="tabs" id="tabbar">
+    <button class="tab on" data-t="ov">Überblick</button>
+    <button class="tab" data-t="tk">Tokyo</button>
+    <button class="tab" data-t="hk">Hakone</button>
+    <button class="tab" data-t="ky">Kyoto</button>
+    <button class="tab" data-t="ad">Adressen</button>
+    <button class="tab" data-t="tr">Transport</button>
+  </div>
+</div>
+
+<!-- ÜBERBLICK -->
+<div class="sec on" id="s-ov">
+  <div class="stitle">Flüge</div>
+  <div class="fgrid">
+    <div class="fc">
+      <div class="fm"><span class="fn">So 05.04 · BA 911</span><span class="fbadge" style="background:#E6F1FB;color:#0C447C">Economy</span></div>
+      <div class="fr"><div class="fp"><div class="ft">06:40</div><div class="fport">FRA T2</div></div><div class="fl"><span class="fd">1h 45m</span></div><div class="fp"><div class="ft">07:25</div><div class="fport">LHR T5</div></div></div>
+      <div class="fnote">Airbus A320 · 2 Gepäckstücke · Ref: YVHP3R</div>
+    </div>
+    <div class="fc">
+      <div class="fm"><span class="fn">So 05.04 · IB 3620 (op. BA 7)</span><span class="fbadge" style="background:#E6F1FB;color:#0C447C">Economy</span></div>
+      <div class="fr"><div class="fp"><div class="ft">09:25</div><div class="fport">LHR T5</div></div><div class="fl"><span class="fd">13h 35m</span></div><div class="fp"><div class="ft">07:00<sup style="font-size:9px">+1</sup></div><div class="fport">HND T3</div></div></div>
+      <div class="fnote">Airbus A350-1000 · 2 Gepäckstücke · Ref: IB/JZ1N4</div>
+    </div>
+    <div class="fc">
+      <div class="fm"><span class="fn">Do 16.04 · AY 068 Finnair</span><span class="fbadge" style="background:#EAF3DE;color:#3B6D11">55L / 55K</span></div>
+      <div class="fr"><div class="fp"><div class="ft">22:15</div><div class="fport">KIX T1</div></div><div class="fl"><span class="fd">13h 05m</span></div><div class="fp"><div class="ft">05:20<sup style="font-size:9px">+1</sup></div><div class="fport">HEL</div></div></div>
+      <div class="fnote">A350-900 · Alkohol inkl. · Check-in Schluss: <strong style="font-weight:500">21:15 Uhr</strong></div>
+    </div>
+    <div class="fc">
+      <div class="fm"><span class="fn">Fr 17.04 · AY 1411 Finnair</span><span class="fbadge" style="background:#EAF3DE;color:#3B6D11">08F / 08E</span></div>
+      <div class="fr"><div class="fp"><div class="ft">07:40</div><div class="fport">HEL</div></div><div class="fl"><span class="fd">2h 40m</span></div><div class="fp"><div class="ft">09:20</div><div class="fport">FRA T2</div></div></div>
+      <div class="fnote">Boeing 737-800 · Check-in Schluss: <strong style="font-weight:500">06:55 Uhr</strong></div>
+    </div>
+  </div>
+  <div class="warn"><strong style="font-weight:500">Rückflug:</strong> Check-in Schluss AY 068 ist 21:15 Uhr in KIX T1. Späteste Abfahrt Kyoto: 17:00 Uhr (Haruka, 75 Min). Osaka-Besuch: ab Namba spätestens 16:30 Uhr.</div>
+  <div class="stitle">Hotels</div>
+  <div class="hgrid">
+    <div class="hcard"><div class="hcard-body"><div class="hcity" style="background:#FAECE7;color:#993C1D">Tokyo</div><div class="hname">Candeo Hotel Ueno Koen</div><div class="hdates">4 Nächte · 06.–10. April</div></div></div>
+    <div class="hcard"><div class="hcard-body"><div class="hcity" style="background:#E1F5EE;color:#0F6E56">Hakone</div><div class="hname">Hakonemori Okada</div><div class="hdates">1 Nacht · 10.–11. April</div></div></div>
+    <div class="hcard"><div class="hcard-body"><div class="hcity" style="background:#FAEEDA;color:#854F0B">Kyoto</div><div class="hname">Hotel Elcient</div><div class="hdates">5 Nächte · 11.–16. April</div></div></div>
+  </div>
+  <div class="stitle">Reiseverlauf</div>
+  <div class="ovt-wrap">
+    <table class="ovt">
+      <thead><tr><th style="width:58px">Datum</th><th>Programm</th></tr></thead>
+      <tbody>
+        <tr><td style="color:var(--color-text-secondary)">So 05.04</td><td>Abflug FRA 06:40 → London → Tokyo (Ankunft 06.04.)</td></tr>
+        <tr style="background:#FAECE733"><td style="color:var(--color-text-secondary)">Mo 06.04</td><td><span style="background:#FAECE7;color:#993C1D;padding:1px 6px;border-radius:4px;font-size:10px;margin-right:6px">Tk1</span>Haneda → Ginza → Ueno → Senso-ji</td></tr>
+        <tr style="background:#FAECE733"><td style="color:var(--color-text-secondary)">Di 07.04</td><td><span style="background:#FAECE7;color:#993C1D;padding:1px 6px;border-radius:4px;font-size:10px;margin-right:6px">Tk2</span>Meiji → Harajuku → Godzilla → Shibuya Sky 19:40 → Batting Center → Ramen Nagi</td></tr>
+        <tr style="background:#FAECE733"><td style="color:var(--color-text-secondary)">Mi 08.04</td><td><span style="background:#FAECE7;color:#993C1D;padding:1px 6px;border-radius:4px;font-size:10px;margin-right:6px">Tk3</span>Odaiba → teamLab 12:00 → SkyTree</td></tr>
+        <tr style="background:#FAECE733"><td style="color:var(--color-text-secondary)">Do 09.04</td><td><span style="background:#FAECE7;color:#993C1D;padding:1px 6px;border-radius:4px;font-size:10px;margin-right:6px">Tk4</span>Akihabara → Pokémon Center → Kaiserpalast</td></tr>
+        <tr><td style="color:var(--color-text-secondary)">Fr 10.04</td><td><span style="background:#FAECE7;color:#993C1D;padding:1px 6px;border-radius:4px;font-size:10px;margin-right:4px">Tk5</span><span style="background:#E1F5EE;color:#0F6E56;padding:1px 6px;border-radius:4px;font-size:10px;margin-right:6px">Hk</span>Romancecar → Hakone Loop</td></tr>
+        <tr style="background:#E1F5EE22"><td style="color:var(--color-text-secondary)">Sa 11.04</td><td><span style="background:#E1F5EE;color:#0F6E56;padding:1px 6px;border-radius:4px;font-size:10px;margin-right:4px">Hk</span><span style="background:#FAEEDA;color:#854F0B;padding:1px 6px;border-radius:4px;font-size:10px;margin-right:6px">Ky</span>Onsen → Shinkansen 10:35 → Gion</td></tr>
+        <tr style="background:#FAEEDA22"><td style="color:var(--color-text-secondary)">So 12.04</td><td><span style="background:#FAEEDA;color:#854F0B;padding:1px 6px;border-radius:4px;font-size:10px;margin-right:6px">Ky</span>Fushimi Inari 06:00 → Kiyomizudera</td></tr>
+        <tr style="background:#EEEDFE22"><td style="color:var(--color-text-secondary)">Mo 13.04</td><td><span style="background:#EEEDFE;color:#3C3489;padding:1px 6px;border-radius:4px;font-size:10px;margin-right:6px">Nara</span>Nara Park → Todaiji → Kasuga</td></tr>
+        <tr style="background:#FAEEDA22"><td style="color:var(--color-text-secondary)">Di 14.04</td><td><span style="background:#FAEEDA;color:#854F0B;padding:1px 6px;border-radius:4px;font-size:10px;margin-right:6px">Ky</span>Arashiyama → Kinkakuji → Ryoanji</td></tr>
+        <tr><td style="color:var(--color-text-secondary)">Mi 15.04</td><td><span style="background:#FBEAF0;color:#993556;padding:1px 6px;border-radius:4px;font-size:10px;margin-right:4px">Uji</span><span style="background:#FAEEDA;color:#854F0B;padding:1px 6px;border-radius:4px;font-size:10px;margin-right:6px">Ky</span>Byodoin → Matcha → Shopping</td></tr>
+        <tr><td style="color:var(--color-text-secondary)">Do 16.04</td><td><span style="background:#FCEBEB;color:#A32D2D;padding:1px 6px;border-radius:4px;font-size:10px;margin-right:6px">Abflug</span>Haruka 17:00 → KIX → Abflug 22:15</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- TOKYO -->
+<div class="sec" id="s-tk">
+  <div class="cbanner">
+    <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=80&w=1194&auto=format&fit=crop" alt="Tokyo">
+    <div class="cbanner-ov" style="background:linear-gradient(to bottom,rgba(0,0,0,0.05),rgba(153,60,29,0.75))">
+      <div class="cbanner-title">Tokyo</div>
+      <div class="cbanner-sub">06.–10. April · 4 Nächte · Candeo Hotel Ueno Koen</div>
+    </div>
+  </div>
+  <div class="img-grid">
+    <div class="ig"><img src="https://images.unsplash.com/photo-1706813253696-10ee6332edd3?q=80&w=1170&auto=format&fit=crop" alt="Senso-ji"><div class="ig-lbl">Senso-ji, Asakusa</div></div>
+    <div class="ig"><img src="https://plus.unsplash.com/premium_photo-1661914240950-b0124f20a5c1?q=80&w=1170&auto=format&fit=crop" alt="Tokyo"><div class="ig-lbl">Tokyo Skyline</div></div>
+    <div class="ig"><img src="https://images.unsplash.com/photo-1557409518-691ebcd96038?q=80&w=1170&auto=format&fit=crop" alt="Sakura"><div class="ig-lbl">Sakura · April</div></div>
+    <div class="ig"><img src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&w=600&q=80" alt="Ramen"><div class="ig-lbl">Ramen &amp; Küche</div></div>
+  </div>
+
+  <!-- TAG 1 -->
+  <div class="day-lbl"><span class="day-lbl-n" style="background:#FAECE7;color:#993C1D">Tag 1</span><span class="day-lbl-t">Ankunft &amp; Senso-ji</span><span class="day-lbl-d">Mo, 06. April</span></div>
+  <div class="dc">
+    <div class="dimg" style="background:#6B2A0A">
+      <img src="https://images.unsplash.com/photo-1699444119386-4546399a14d7?q=80&w=1170&auto=format&fit=crop" alt="Senso-ji">
+      <div class="dimg-ov" style="background:linear-gradient(transparent 35%,rgba(107,42,10,0.85))">
+        <div class="dnum-pill"><span class="dnum-n">Tag 1</span><span class="dnum-d">Mo 06.04</span></div>
+        <div class="dimg-title">Ankunft &amp; Senso-ji</div>
+        <div class="dimg-sub">Haneda · Ginza · Ueno · Asakusa</div>
+      </div>
+    </div>
+    <div class="db">
+      <div class="tr2"><div class="tt"><div class="dot"></div>08:00</div><div class="tc"><strong>Koffer Takuhaibin</strong> – Wir geben unsere Koffer am Yamato Transport Schalter direkt nach dem Zoll in T3 auf. ~¥1.500–2.500/Koffer, Lieferung am 07.04. im Hotel.<div class="chip">nur Handgepäck mitnehmen!</div><div class="tn">Keikyu Aeroexpress → Ueno · ~50 Min</div></div></div>
+      <div class="tr2"><div class="tt">10:00</div><div class="tc"><strong>Ginza</strong><a href="https://www.google.com/maps/search/?api=1&query=Ginza+Chuo-dori+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – Chuo-dori Spaziergang, Kaffee % Arabica<div class="tn">U-Bahn Ginza Linie · 15 Min</div></div></div>
+      <div class="tr2"><div class="tt">14:00</div><div class="tc"><strong>Ueno Park</strong><a href="https://www.google.com/maps/search/?api=1&query=Ueno+Park+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – Wir schlendern durch den Park am Shinobazu-Teich und schauen uns den Bentendo-Tempel an. Im April blühen hier die Kirschbäume – absolut magisch!<div class="tn">Optional: Tokyo National Museum<a href="https://www.google.com/maps/search/?api=1&query=Tokyo+National+Museum+Ueno" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> direkt am Parkeingang · ¥1.000 · weltgrößte Sammlung japanischer Kunst</div></div></div>
+      <div class="tr2"><div class="tt">16:00</div><div class="tc"><strong>Senso-ji Asakusa</strong><a href="https://www.google.com/maps/search/?api=1&query=Senso-ji+Temple+Asakusa+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – Kaminarimon, Nakamise · abends beleuchtet!<div class="tn">Zu Fuß / 1 Stop · 10 Min</div></div></div>
+      <div class="tr2"><div class="tt">19:00</div><div class="tc"><strong>Hoppy Street</strong><a href="https://www.google.com/maps/search/?api=1&query=Hoppy+Street+Asakusa+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – Abendessen &amp; erstes Bier</div></div>
+    </div>
+    <div class="extras">
+      <div class="ec"><div class="etitle">Restaurants</div>
+        <div class="ei"><strong>Asakusa Imahan</strong> – Sukiyaki/Shabu-Shabu</div>
+        <div class="ei"><strong>Sometaro</strong> – Okonomiyaki selbst grillen</div>
+      </div>
+      <div class="ec"><div class="etitle">Tipps</div>
+        <div class="ei">Suica ¥5.000 aufladen – gilt überall</div>
+        <div class="ei">Früh schlafen = kein Jetlag</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAG 2 -->
+  <div class="day-lbl"><span class="day-lbl-n" style="background:#FAECE7;color:#993C1D">Tag 2</span><span class="day-lbl-t">Shibuya + Shinjuku Nacht</span><span class="day-lbl-d">Di, 07. April</span></div>
+  <div class="dc">
+    <div class="dimg" style="background:#2C1A0E">
+      <img src="https://images.unsplash.com/photo-1542051841857-5f90071e7989?auto=format&w=800&q=80" alt="Shibuya">
+      <div class="dimg-ov" style="background:linear-gradient(transparent 35%,rgba(44,26,14,0.85))">
+        <div class="dnum-pill"><span class="dnum-n">Tag 2</span><span class="dnum-d">Di 07.04</span></div>
+        <div class="dimg-title">Shibuya + Shinjuku Nacht</div>
+        <div class="dimg-sub">Meiji · Harajuku · Godzilla · Shibuya Sky · Batting Center · Ramen</div>
+      </div>
+    </div>
+    <div class="db">
+      <div class="tr2"><div class="tt">09:00</div><div class="tc"><strong>Meiji-Schrein</strong><a href="https://www.google.com/maps/search/?api=1&query=Meiji+Jingu+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – morgens ruhig im Zedernwald<div class="tn">JR Yamanote → Harajuku · 20 Min</div></div></div>
+      <div class="tr2"><div class="tt">11:00</div><div class="tc"><strong>Harajuku</strong><a href="https://www.google.com/maps/search/?api=1&query=Takeshita+Street+Harajuku+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – Takeshita Street, Omotesando</div></div>
+      <div class="tr2"><div class="tt">13:00</div><div class="tc"><strong>Godzilla-Kopf</strong><a href="https://www.google.com/maps/search/?api=1&query=Godzilla+Head+Hotel+Gracery+Shinjuku+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – Wir machen einen Stopp am Hotel Gracery Shinjuku und schauen uns den riesigen Godzilla-Kopf auf dem Dach an. Manchmal brüllt er sogar! Für das beste Foto gehen wir auf die kostenlose Aussichtsterrasse im 8. OG.<div class="tn">JR Yamanote → Shinjuku · 5 Min · Eintritt kostenlos</div></div></div>
+      <div class="tr2"><div class="tt">14:00</div><div class="tc"><strong>Shibuya</strong><a href="https://www.google.com/maps/search/?api=1&query=Shibuya+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – Wir kommen am Hachiko-Ausgang raus und machen direkt das Foto mit der <strong>Hachiko-Statue</strong><a href="https://www.google.com/maps/search/?api=1&query=Hachiko+Statue+Shibuya+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – dem treuen Hund, der jeden Tag auf seinen Herrchen wartete. Danach Bummeln, Shibuya 109, Loft.<div class="tn">JR Yamanote → Shibuya · 5 Min · Hachiko-Ausgang nehmen!</div></div></div>
+      <div class="tr2"><div class="tt">17:30</div><div class="tc"><strong>Shibuya Crossing</strong><a href="https://www.google.com/maps/search/?api=1&query=Shibuya+Scramble+Crossing+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – Dämmerung, bestes Licht</div></div>
+      <div class="tr2"><div class="tt"><div class="dot"></div>19:40</div><div class="tc"><strong>Shibuya Sky</strong><a href="https://www.google.com/maps/search/?api=1&query=Shibuya+Sky+Scramble+Square+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – Wir haben hier reserviert! Nachtpanorama auf 229m.<div class="tn">Scramble Square T45–46 · Zu Fuß · 2 Min</div></div></div>
+      <div class="tr2"><div class="tt">21:00</div><div class="tc"><strong>Nonbei Yokocho</strong><a href="https://www.google.com/maps/search/?api=1&query=Nonbei+Yokocho+Shibuya+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – Ein Bier in der gemütlichen Bar-Gasse zum Aufwärmen<div class="tn">Zu Fuß · 5 Min</div></div></div>
+      <div class="tr2"><div class="tt">21:30</div><div class="tc"><strong>Weiter nach Shinjuku</strong><div class="tn">JR Yamanote · 10 Min</div></div></div>
+      <div class="tr2"><div class="tt">22:00</div><div class="tc"><strong>Omoide Yokocho</strong><a href="https://www.google.com/maps/search/?api=1&query=Omoide+Yokocho+Memory+Lane+Shinjuku+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> / <strong>Golden Gai</strong><a href="https://www.google.com/maps/search/?api=1&query=Golden+Gai+Shinjuku+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – Wir hüpfen durch die winzigen Bars in Golden Gai und trinken Yakitori in Omoide Yokocho<div class="tn">Zu Fuß · 5 Min</div></div></div>
+      <div class="tr2"><div class="tt">23:30</div><div class="tc"><strong>Shinjuku Batting Center</strong><a href="https://www.google.com/maps/search/?api=1&query=Shinjuku+Batting+Center+Kabukicho+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – Wir schlagen Baseball-Bälle in den Retro-Käfigen mitten in Kabukicho. Wir starten bei 70–90 km/h und steigern uns. Helm und Handschuhe holen wir kostenlos an der Kasse, Münzwechsler steht vor Ort.<div class="tn">Zu Fuß von Golden Gai · 3 Min · offen bis 04:00 Uhr · nur Bargeld! · ¥400 / 25 Bälle</div></div></div>
+      <div class="tr2"><div class="tt">00:30</div><div class="tc"><strong>Ramen Nagi</strong><a href="https://www.google.com/maps/search/?api=1&query=Ramen+Nagi+Golden+Gai+Shinjuku+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – Unser Late-Night-Ramen direkt in Golden Gai. Die Brühe wird aus über 20 Sorten getrockneter Fische mehr als einen halben Tag gekocht – tief und komplex. Wir nehmen die Signature Niboshi-Bowl.<div class="tn">Zu Fuß vom Batting Center · 2 Min · 24h geöffnet</div></div></div>
+    </div>
+    <div class="extras">
+      <div class="ec"><div class="etitle">Tipps</div>
+        <div class="ei">Shibuya Sky: Wir haben online reserviert – ausverkauft wäre schade!</div>
+        <div class="ei">Crossing-Foto: Starbucks Fensterplatz 2. OG</div>
+        <div class="ei">Golden Gai: Cover Charge ~¥500 pro Bar – Bargeld dabei haben</div>
+        <div class="ei">Batting Center: Münzwechsler vor Ort, kein Englisch nötig</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAG 3 -->
+  <div class="day-lbl"><span class="day-lbl-n" style="background:#FAECE7;color:#993C1D">Tag 3</span><span class="day-lbl-t">Odaiba → teamLab → SkyTree</span><span class="day-lbl-d">Mi, 08. April</span></div>
+  <div class="dc">
+    <div class="dimg" style="background:#1A2A4A">
+      <img src="https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&w=800&q=80" alt="Tokyo">
+      <div class="dimg-ov" style="background:linear-gradient(transparent 35%,rgba(26,42,74,0.88))">
+        <div class="dnum-pill"><span class="dnum-n">Tag 3</span><span class="dnum-d">Mi 08.04</span></div>
+        <div class="dimg-title">Odaiba → teamLab → SkyTree</div>
+        <div class="dimg-sub">teamLab Reservierung 12:00 Uhr!</div>
+      </div>
+    </div>
+    <div class="db">
+      <div class="tr2"><div class="tt">09:15</div><div class="tc"><strong>Odaiba</strong><a href="https://www.google.com/maps/search/?api=1&query=DiverCity+Tokyo+Odaiba+Gundam" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – Rainbow Bridge, DiverCity Gundam<div class="tn">Yurikamome ab Shimbashi · 35 Min</div></div></div>
+      <div class="tr2"><div class="tt"><div class="dot"></div>12:00</div><div class="tc"><strong>teamLab Planets</strong><a href="https://www.google.com/maps/search/?api=1&query=teamLab+Planets+Toyosu+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – Wir haben unsere Tickets für 12:00 Uhr gebucht. Socken ausziehen, Hose hochkrempeln – ~2,5 Std einplanen.<div class="tn">Yurikamome → Shijo-mae · 10 Min</div></div></div>
+      <div class="tr2"><div class="tt">17:00</div><div class="tc"><strong>Tokyo SkyTree</strong><a href="https://www.google.com/maps/search/?api=1&query=Tokyo+SkyTree+Oshiage" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – Tembo Deck 350m + Tembo Galleria 450m, Sonnenuntergang &amp; Nacht<div class="tn">Toei Asakusa Linie · 40 Min</div></div></div>
+    </div>
+    <div class="extras">
+      <div class="ec"><div class="etitle">Tipps</div>
+        <div class="ei">teamLab: Tickets unter teamlab.art gebucht · ¥3.200/Person</div>
+        <div class="ei">SkyTree Tickets online kaufen = keine Schlange</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAG 4 -->
+  <div class="day-lbl"><span class="day-lbl-n" style="background:#FAECE7;color:#993C1D">Tag 4</span><span class="day-lbl-t">Akihabara → Pokémon → Kaiserpalast</span><span class="day-lbl-d">Do, 09. April</span></div>
+  <div class="dc">
+    <div class="dimg" style="background:#1C1C2E">
+      <img src="https://images.unsplash.com/photo-1542051841857-5f90071e7989?auto=format&w=800&q=80" alt="Tokyo">
+      <div class="dimg-ov" style="background:linear-gradient(transparent 35%,rgba(28,28,46,0.88))">
+        <div class="dnum-pill"><span class="dnum-n">Tag 4</span><span class="dnum-d">Do 09.04</span></div>
+        <div class="dimg-title">Akihabara → Pokémon → Kaiserpalast</div>
+        <div class="dimg-sub">Akihabara · Nihonbashi · Ginza</div>
+      </div>
+    </div>
+    <div class="db">
+      <div class="tr2"><div class="tt">09:30</div><div class="tc"><strong>Akihabara</strong><a href="https://www.google.com/maps/search/?api=1&query=Akihabara+Electric+Town+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – Mandarake (5.OG), Super Potato<a href="https://www.google.com/maps/search/?api=1&query=Super+Potato+Akihabara+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a>, Yodobashi<div class="tn">JR Yamanote · 20 Min · Öffnung ab 10–11 Uhr!</div></div></div>
+      <div class="tr2"><div class="tt">12:00</div><div class="tc"><strong>Pokémon Center DX</strong><a href="https://www.google.com/maps/search/?api=1&query=Pokemon+Center+DX+Nihonbashi+Takashimaya+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – Nihonbashi Takashimaya 6.OG · größtes Pokémon Center Japans</div></div>
+      <div class="tr2"><div class="tt">14:30</div><div class="tc"><strong>Imperial Palace East Garden</strong><a href="https://www.google.com/maps/search/?api=1&query=Imperial+Palace+East+Garden+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – kostenlos<div class="tn">Mo &amp; Fr geschlossen – Do passt perfekt!</div></div></div>
+      <div class="tr2"><div class="tt">15:30</div><div class="tc"><strong>Hamarikyu Park</strong><a href="https://www.google.com/maps/search/?api=1&query=Hamarikyu+Gardens+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – Wir schlendern durch den historischen Tidepark mit Teegarten direkt am Tokyo Bay Ufer. Mit Skyline-Kulisse im Hintergrund einer der schönsten Parks der Stadt. · ¥300<div class="tn">Zu Fuß / U-Bahn · 10 Min vom Kaiserpalast</div></div></div>
+      <div class="tr2"><div class="tt">17:00</div><div class="tc"><strong>Tokyo Tower</strong><a href="https://www.google.com/maps/search/?api=1&query=Tokyo+Tower+Japan" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – Wir besuchen den ikonischen orange-weißen Turm – Main Deck auf 150m, bei klarem Wetter Mt. Fuji sichtbar. Abends leuchtet er rot.<div class="tn">Zu Fuß / U-Bahn vom Hamarikyu · 15 Min · Main Deck ¥1.200</div></div></div>
+      <div class="tr2"><div class="tt">19:00</div><div class="tc"><strong>Ginza</strong><a href="https://www.google.com/maps/search/?api=1&query=Ginza+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – Abendspaziergang &amp; Abendessen<div class="tn">Zu Fuß vom Tokyo Tower · 10 Min</div></div></div>
+    </div>
+  </div>
+
+  <!-- TAG 5 -->
+  <div class="day-lbl"><span class="day-lbl-n" style="background:#FAECE7;color:#993C1D">Tag 5</span><span class="day-lbl-t">Weiterreise nach Hakone</span><span class="day-lbl-d">Fr, 10. April</span></div>
+  <div class="dc">
+    <div class="dimg" style="background:#1A2E1A">
+      <img src="https://images.unsplash.com/photo-1545569341-9eb8b30979d9?auto=format&w=800&q=80" alt="Zug">
+      <div class="dimg-ov" style="background:linear-gradient(transparent 35%,rgba(26,46,26,0.88))">
+        <div class="dnum-pill"><span class="dnum-n">Tag 5</span><span class="dnum-d">Fr 10.04</span></div>
+        <div class="dimg-title">Weiterreise nach Hakone</div>
+        <div class="dimg-sub">Romancecar 10:00 ab Shinjuku</div>
+      </div>
+    </div>
+    <div class="db">
+      <div class="tr2"><div class="tt">08:00</div><div class="tc">Frühstück + Checkout · Koffer per Takuhaibin ans Hakone-Hotel schicken (Reception fragen)</div></div>
+      <div class="tr2"><div class="tt"><div class="dot"></div>10:00</div><div class="tc"><strong>Odakyu Romancecar</strong><a href="https://www.google.com/maps/search/?api=1&query=Shinjuku+Station+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – Wir haben unsere Sitze im Romancecar reserviert (odakyu.jp).<div class="tn">Shinjuku → Hakone-Yumoto · 85 Min</div></div></div>
+      <div class="tr2"><div class="tt">13:00</div><div class="tc"><strong>Hakone Loop starten</strong><a href="https://www.google.com/maps/search/?api=1&query=Hakone+Yumoto+Station" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a><div class="chip">Hakone Free Pass kaufen!</div></div></div>
+      <div class="tr2"><div class="tt">18:00</div><div class="tc">Check-in <strong>Hakonemori Okada</strong><a href="https://www.google.com/maps/search/?api=1&query=Hakonemori+Okada+Hakone" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> · Kaiseki-Dinner + Onsen</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- HAKONE -->
+<div class="sec" id="s-hk">
+  <div class="cbanner">
+    <img src="https://images.unsplash.com/photo-1633053407999-bf6b41e074bc?q=80&w=1073&auto=format&fit=crop" alt="Hakone">
+    <div class="cbanner-ov" style="background:linear-gradient(to bottom,rgba(0,0,0,0.05),rgba(15,110,86,0.75))">
+      <div class="cbanner-title">Hakone</div>
+      <div class="cbanner-sub">10.–11. April · 1 Nacht · Hakonemori Okada</div>
+    </div>
+  </div>
+  <div class="img-grid">
+    <div class="ig"><img src="https://images.unsplash.com/photo-1618278942403-e973260cc425?q=80&w=1074&auto=format&fit=crop" alt="Mount Fuji"><div class="ig-lbl">Mount Fuji · Ashinoko</div></div>
+    <div class="ig"><img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&w=600&q=80" alt="Onsen"><div class="ig-lbl">Onsen Ryokan</div></div>
+  </div>
+
+  <div class="day-lbl"><span class="day-lbl-n" style="background:#E1F5EE;color:#0F6E56">Tag 6</span><span class="day-lbl-t">Der Hakone Loop</span><span class="day-lbl-d">Fr, 10. April</span></div>
+  <div class="dc">
+    <div class="dimg" style="background:#0A3D2B">
+      <img src="https://images.unsplash.com/photo-1680712545532-3373f2ccf981?q=80&w=1965&auto=format&fit=crop" alt="Hakone">
+      <div class="dimg-ov" style="background:linear-gradient(transparent 35%,rgba(10,61,43,0.88))">
+        <div class="dnum-pill"><span class="dnum-n">Tag 6</span><span class="dnum-d">Fr 10.04</span></div>
+        <div class="dimg-title">Der Hakone Loop</div>
+        <div class="dimg-sub">Start 13:00 · Gegenuhrzeigersinn · ~4–5 Std</div>
+      </div>
+    </div>
+    <div class="db">
+      <div style="font-size:12px;color:var(--color-text-secondary);padding:8px 10px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);margin-bottom:12px">Alle 6 Verkehrsmittel im Hakone Free Pass inklusive</div>
+      <div class="hks"><div class="hkn" style="background:#E1F5EE;color:#0F6E56">1</div><div><div class="hkt">Hakone Tozan Railway – Zahnradbahn · ~40 Min<a href="https://www.google.com/maps/search/?api=1&query=Hakone+Tozan+Railway" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="hkd">Japans einzige Bergbahn mit <strong>3 Spitzkehren</strong>. <strong>Pflicht-Halt Chokoku-no-Mori</strong> = Open Air Museum, Picasso-Pavillon, kostenloser Fuß-Onsen (~45 Min).</div></div></div>
+      <div class="hks"><div class="hkn" style="background:#E1F5EE;color:#0F6E56">2</div><div><div class="hkt">Hakone Tozan Cable Car – Standseilbahn · ~10 Min<a href="https://www.google.com/maps/search/?api=1&query=Hakone+Tozan+Cable+Car+Gora" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="hkd">Steil bergauf von Gora nach <strong>Sounzan</strong>. Direkter Anschluss ans Ropeway.</div></div></div>
+      <div class="hks"><div class="hkn" style="background:#E1F5EE;color:#0F6E56">3</div><div><div class="hkt">Hakone Ropeway – Gondelbahn · ~30 Min<a href="https://www.google.com/maps/search/?api=1&query=Owakudani+Hakone+Ropeway" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="hkd">Über die Vulkanlandschaft. <strong>Pflicht-Stopp Owakudani</strong> – Schwefelkrater. Wir essen <strong>Kuro-Tamago</strong> (schwarze Eier, ¥500/5 Stk) = jedes Ei +7 Lebensjahre.</div></div></div>
+      <div class="hks"><div class="hkn" style="background:#E1F5EE;color:#0F6E56">4</div><div><div class="hkt">Hakone Sightseeing Cruise · ~40 Min<a href="https://www.google.com/maps/search/?api=1&query=Hakone+Sightseeing+Cruise+Lake+Ashi" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="hkd">Wir fahren mit der Piratenschiff-Fähre über den <strong>Ashinoko-See</strong>. Bei klarem Wetter sehen wir den <strong>Mt. Fuji</strong> – ikonischster Ausblick Japans.</div></div></div>
+      <div class="hks"><div class="hkn" style="background:#E1F5EE;color:#0F6E56">5</div><div><div class="hkt">Hakone-Schrein · ca. 16:30 Uhr<a href="https://www.google.com/maps/search/?api=1&query=Hakone+Shrine+Jinja" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="hkd">Das rote Torii-Tor steht direkt im See – wir machen unser Foto bei ruhigem Wasser.</div></div></div>
+      <div class="hks"><div class="hkn" style="background:#E1F5EE;color:#0F6E56">6</div><div><div class="hkt">Bus zurück · ~35 Min</div><div class="hkd">Linie H ab Moto-Hakone → Hakone-Yumoto. Ankunft ~18:00. Wir checken ins Hakonemori Okada ein – Kaiseki-Dinner haben wir reserviert!</div></div></div>
+    </div>
+    <div class="extras">
+      <div class="ec"><div class="etitle">Tipps</div>
+        <div class="ei">Owakudani vorab prüfen: hakone-ropeway.co.jp</div>
+        <div class="ei">Hakone Free Pass ~¥6.500 ab Shinjuku – alles inklusive</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="day-lbl"><span class="day-lbl-n" style="background:#E1F5EE;color:#0F6E56">Tag 7</span><span class="day-lbl-t">Shinkansen nach Kyoto</span><span class="day-lbl-d">Sa, 11. April</span></div>
+  <div class="dc">
+    <div class="dimg" style="background:#1A2E4A">
+      <img src="https://images.unsplash.com/photo-1514337224818-9787cf717f2a?q=80&w=1931&auto=format&fit=crop" alt="Shinkansen">
+      <div class="dimg-ov" style="background:linear-gradient(transparent 35%,rgba(26,46,74,0.88))">
+        <div class="dnum-pill"><span class="dnum-n">Tag 7</span><span class="dnum-d">Sa 11.04</span></div>
+        <div class="dimg-title">Shinkansen nach Kyoto</div>
+        <div class="dimg-sub">Abfahrt Odawara 10:35 → Kyoto ~11:45</div>
+      </div>
+    </div>
+    <div class="db">
+      <div class="tr2"><div class="tt">07:00</div><div class="tc">Frühstück + letztes <strong>Onsen-Morgenbad</strong></div></div>
+      <div class="tr2"><div class="tt"><div class="dot"></div>09:50</div><div class="tc"><strong>Späteste Abfahrt</strong> Hakone-Yumoto → Odawara<div class="tn">Hakone Tozan Bahn · 15 Min</div></div></div>
+      <div class="tr2"><div class="tt"><div class="dot"></div>10:35</div><div class="tc"><strong>Shinkansen</strong><a href="https://www.google.com/maps/search/?api=1&query=Odawara+Station+Shinkansen" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> Odawara → Kyoto<div class="tn">~55 Min · ¥7.810/Person</div></div></div>
+      <div class="tr2"><div class="tt">11:45</div><div class="tc">Ankunft Kyoto · Check-in <strong>Hotel Elcient</strong><a href="https://www.google.com/maps/search/?api=1&query=Hotel+Elcient+Kyoto" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div></div>
+      <div class="tr2"><div class="tt">15:00</div><div class="tc"><strong>Higashiyama</strong><a href="https://www.google.com/maps/search/?api=1&query=Higashiyama+Ninenzaka+Kyoto" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – Ninenzaka, Sannenzaka<div class="tn">Bus 206 · 20 Min</div></div></div>
+      <div class="tr2"><div class="tt">17:30</div><div class="tc"><strong>Gion</strong><a href="https://www.google.com/maps/search/?api=1&query=Gion+Hanamikoji+Street+Kyoto" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – Hanamikoji, Maiko-Begegnung<div class="tn">Abstand halten!</div></div></div>
+      <div class="tr2"><div class="tt">19:00</div><div class="tc"><strong>Pontocho</strong><a href="https://www.google.com/maps/search/?api=1&query=Pontocho+Alley+Kyoto" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – Abendessen</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- KYOTO -->
+<div class="sec" id="s-ky">
+  <div class="cbanner">
+    <img src="https://images.unsplash.com/photo-1578469645742-46cae010e5d4?q=80&w=1170&auto=format&fit=crop" alt="Kyoto">
+    <div class="cbanner-ov" style="background:linear-gradient(to bottom,rgba(0,0,0,0.05),rgba(133,79,11,0.78))">
+      <div class="cbanner-title">Kyoto</div>
+      <div class="cbanner-sub">11.–16. April · 5 Nächte · Hotel Elcient</div>
+    </div>
+  </div>
+  <div class="img-grid">
+    <div class="ig"><img src="https://images.unsplash.com/photo-1698618988744-737573cb6a7a?q=80&w=1170&auto=format&fit=crop" alt="Bambus"><div class="ig-lbl">Arashiyama Bambus</div></div>
+    <div class="ig"><img src="https://images.unsplash.com/photo-1478436127897-769e1b3f0f36?auto=format&w=600&q=80" alt="Fushimi Inari"><div class="ig-lbl">Fushimi Inari</div></div>
+    <div class="ig"><img src="https://images.unsplash.com/photo-1530708780517-cc640cf05561?q=80&w=1170&auto=format&fit=crop" alt="Nara"><div class="ig-lbl">Nara Hirsche</div></div>
+    <div class="ig"><img src="https://images.unsplash.com/photo-1515823064-d6e0c04616a7?auto=format&w=600&q=80" alt="Matcha"><div class="ig-lbl">Matcha · Uji</div></div>
+  </div>
+
+  <div class="day-lbl"><span class="day-lbl-n" style="background:#FAEEDA;color:#854F0B">Tag 8</span><span class="day-lbl-t">Fushimi Inari → Kiyomizudera</span><span class="day-lbl-d">So, 12. April</span></div>
+  <div class="dc">
+    <div class="dimg" style="background:#7B1A1A">
+      <img src="https://images.unsplash.com/photo-1719710707871-4b954cc55664?q=80&w=1026&auto=format&fit=crop" alt="Fushimi Inari">
+      <div class="dimg-ov" style="background:linear-gradient(transparent 35%,rgba(123,26,26,0.88))">
+        <div class="dnum-pill"><span class="dnum-n">Tag 8</span><span class="dnum-d">So 12.04</span></div>
+        <div class="dimg-title">Fushimi Inari → Kiyomizudera</div>
+        <div class="dimg-sub">Aufbruch 06:00 – Frühaufsteher-Tag!</div>
+      </div>
+    </div>
+    <div class="db">
+      <div class="tr2"><div class="tt"><div class="dot"></div>06:00</div><div class="tc"><strong>Fushimi Inari Taisha</strong><a href="https://www.google.com/maps/search/?api=1&query=Fushimi+Inari+Taisha+Kyoto" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – Wir brechen früh auf um die Torii-Pfade fast alleine zu haben<div class="tn">JR Nara Linie → Inari · 15 Min · Ab 09:00 Massen!</div></div></div>
+      <div class="tr2"><div class="tt">10:00</div><div class="tc"><strong>Yasaka Pagoda</strong><a href="https://www.google.com/maps/search/?api=1&query=Yasaka+Pagoda+Kyoto" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> + Ninenzaka / Sannenzaka</div></div>
+      <div class="tr2"><div class="tt">12:00</div><div class="tc"><strong>Kiyomizudera</strong><a href="https://www.google.com/maps/search/?api=1&query=Kiyomizudera+Temple+Kyoto" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – Veranda mit Kyoto-Panorama · ¥500</div></div>
+      <div class="tr2"><div class="tt">15:30</div><div class="tc"><strong>Nishiki Market</strong><a href="https://www.google.com/maps/search/?api=1&query=Nishiki+Market+Kyoto" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – probieren &amp; einkaufen<div class="tn">Schliesst 17–18 Uhr!</div></div></div>
+    </div>
+  </div>
+
+  <div class="day-lbl"><span class="day-lbl-n" style="background:#EEEDFE;color:#3C3489">Tag 9</span><span class="day-lbl-t">Nara – Hirsche &amp; Großer Buddha</span><span class="day-lbl-d">Mo, 13. April</span></div>
+  <div class="dc">
+    <div class="dimg" style="background:#2A4A1A">
+      <img src="https://images.unsplash.com/photo-1537153725174-cba5e5e81ab0?q=80&w=1170&auto=format&fit=crop" alt="Nara">
+      <div class="dimg-ov" style="background:linear-gradient(transparent 35%,rgba(42,74,26,0.88))">
+        <div class="dnum-pill"><span class="dnum-n">Tag 9</span><span class="dnum-d">Mo 13.04</span></div>
+        <div class="dimg-title">Nara – Hirsche &amp; Großer Buddha</div>
+        <div class="dimg-sub">Tagesausflug · 45 Min ab Kyoto</div>
+      </div>
+    </div>
+    <div class="db">
+      <div class="tr2"><div class="tt">08:30</div><div class="tc">Kyoto → Nara<div class="tn">JR Nara Linie · 45 Min · ¥730</div></div></div>
+      <div class="tr2"><div class="tt">09:30</div><div class="tc"><strong>Nara Park</strong><a href="https://www.google.com/maps/search/?api=1&query=Nara+Park+Japan" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – Wir füttern die Hirsche mit Senbei-Keksen</div></div>
+      <div class="tr2"><div class="tt">11:00</div><div class="tc"><strong>Todai-ji</strong><a href="https://www.google.com/maps/search/?api=1&query=Todaiji+Temple+Nara" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – Großer Buddha 15m · ¥600</div></div>
+      <div class="tr2"><div class="tt">12:30</div><div class="tc">Mittagessen – <strong>Kakinoha-Zushi</strong> (Blatt-Sushi, Nara-Spezialität)</div></div>
+      <div class="tr2"><div class="tt">13:30</div><div class="tc"><strong>Kasuga Taisha</strong><a href="https://www.google.com/maps/search/?api=1&query=Kasuga+Taisha+Shrine+Nara" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – Laternen-Schrein im mystischen Wald</div></div>
+      <div class="tr2"><div class="tt">16:00</div><div class="tc">Nara → Kyoto<div class="tn">JR Nara Linie · 45 Min</div></div></div>
+    </div>
+  </div>
+
+  <div class="day-lbl"><span class="day-lbl-n" style="background:#FAEEDA;color:#854F0B">Tag 10</span><span class="day-lbl-t">Arashiyama + Kinkakuji + Ryoanji</span><span class="day-lbl-d">Di, 14. April</span></div>
+  <div class="dc">
+    <div class="dimg" style="background:#1A3A1A">
+      <img src="https://images.unsplash.com/photo-1698137363944-d34de2b00bce?q=80&w=1170&auto=format&fit=crop" alt="Arashiyama">
+      <div class="dimg-ov" style="background:linear-gradient(transparent 35%,rgba(26,58,26,0.88))">
+        <div class="dnum-pill"><span class="dnum-n">Tag 10</span><span class="dnum-d">Di 14.04</span></div>
+        <div class="dimg-title">Arashiyama + Kinkakuji</div>
+        <div class="dimg-sub">Bambus · Zen · Gold</div>
+      </div>
+    </div>
+    <div class="db">
+      <div class="tr2"><div class="tt">08:00</div><div class="tc">Hotel → Arashiyama<div class="tn">JR Sagano → Saga-Arashiyama · 25 Min</div></div></div>
+      <div class="tr2"><div class="tt">08:30</div><div class="tc"><strong>Arashiyama Bambuswald</strong><a href="https://www.google.com/maps/search/?api=1&query=Arashiyama+Bamboo+Grove+Kyoto" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – Wir kommen früh, um den Bambuswald fast alleine zu erleben</div></div>
+      <div class="tr2"><div class="tt">09:30</div><div class="tc"><strong>Tenryu-ji</strong><a href="https://www.google.com/maps/search/?api=1&query=Tenryuji+Temple+Arashiyama+Kyoto" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – Zen-Garten Weltkulturerbe</div></div>
+      <div class="tr2"><div class="tt">11:00</div><div class="tc"><strong>Okochi Sanso Villa</strong><a href="https://www.google.com/maps/search/?api=1&query=Okochi+Sanso+Villa+Arashiyama" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – Garten + Teepause im Eintritt inklusive</div></div>
+      <div class="tr2"><div class="tt">13:30</div><div class="tc"><strong>Kinkakuji</strong><a href="https://www.google.com/maps/search/?api=1&query=Kinkakuji+Golden+Pavilion+Kyoto" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – Goldener Pavillon · ¥500<div class="tn">Kyoto Bus 11 oder 94 · 40 Min</div></div></div>
+      <div class="tr2"><div class="tt">16:00</div><div class="tc"><strong>Ryoanji</strong><a href="https://www.google.com/maps/search/?api=1&query=Ryoanji+Zen+Garden+Kyoto" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – berühmtester Zen-Steingarten Japans</div></div>
+    </div>
+  </div>
+
+  <div class="day-lbl"><span class="day-lbl-n" style="background:#FBEAF0;color:#993556">Tag 11</span><span class="day-lbl-t">Uji · Matcha &amp; Kyoto Shopping</span><span class="day-lbl-d">Mi, 15. April</span></div>
+  <div class="dc">
+    <div class="dimg" style="background:#1A3A1A">
+      <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&w=800&q=80" alt="Kyoto">
+      <div class="dimg-ov" style="background:linear-gradient(transparent 35%,rgba(26,58,26,0.88))">
+        <div class="dnum-pill"><span class="dnum-n">Tag 11</span><span class="dnum-d">Mi 15.04</span></div>
+        <div class="dimg-title">Uji · Matcha &amp; Kyoto Shopping</div>
+        <div class="dimg-sub">Byodoin · Nakamura Tokichi · Nijo-jo</div>
+      </div>
+    </div>
+    <div class="db">
+      <div class="tr2"><div class="tt">09:00</div><div class="tc"><strong>Byodo-in</strong><a href="https://www.google.com/maps/search/?api=1&query=Byodoin+Phoenix+Hall+Uji+Kyoto" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – Phoenix Hall · ¥600 · auf der ¥10-Münze!<div class="tn">JR Nara Linie → Uji · 20 Min · ¥240</div></div></div>
+      <div class="tr2"><div class="tt">11:00</div><div class="tc"><strong>Nakamura Tokichi Honten</strong><a href="https://www.google.com/maps/search/?api=1&query=Nakamura+Tokichi+Honten+Uji+Kyoto" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> – Wir bestellen das Matcha-Parfait und die Matcha-Soba – bestes Matcha-Erlebnis unserer Reise!<div class="tn">Wir stellen uns vor 11 Uhr an</div></div></div>
+      <div class="tr2"><div class="tt">13:00</div><div class="tc"><strong>Nijo-jo</strong><a href="https://www.google.com/maps/search/?api=1&query=Nijo+Castle+Kyoto" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> (knarrende Böden!) oder Teramachi Shopping<a href="https://www.google.com/maps/search/?api=1&query=Teramachi+Shopping+Street+Kyoto" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div></div>
+      <div class="tr2"><div class="tt">19:00</div><div class="tc">Letztes Abendessen – <strong>Nishiki Warai</strong><a href="https://www.google.com/maps/search/?api=1&query=Nishiki+Warai+Okonomiyaki+Kyoto" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> (Okonomiyaki)</div></div>
+    </div>
+  </div>
+
+  <div class="day-lbl"><span class="day-lbl-n" style="background:#FCEBEB;color:#A32D2D">Tag 12</span><span class="day-lbl-t">Abreise · Osaka KIX</span><span class="day-lbl-d">Do, 16. April</span></div>
+  <div class="dc">
+    <div class="dimg" style="background:#8B1A1A">
+      <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&w=800&q=80" alt="Flughafen">
+      <div class="dimg-ov" style="background:linear-gradient(transparent 35%,rgba(139,26,26,0.88))">
+        <div class="dnum-pill"><span class="dnum-n">Tag 12</span><span class="dnum-d">Do 16.04</span></div>
+        <div class="dimg-title">Abreise · Osaka KIX</div>
+        <div class="dimg-sub">Abflug 22:15 · AY 068 · Check-in Schluss 21:15</div>
+      </div>
+    </div>
+    <div class="db">
+      <div class="tr2"><div class="tt">Morgen</div><div class="tc">Frühstück + Checkout</div></div>
+      <div class="tr2"><div class="tt">10:00</div><div class="tc">Letzter Bummel oder Osaka<a href="https://www.google.com/maps/search/?api=1&query=Dotonbori+Osaka" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> (Dotonbori)</div></div>
+      <div class="tr2"><div class="tt"><div class="dot"></div>17:00</div><div class="tc"><strong>Späteste Abfahrt</strong> Kyoto → KIX<a href="https://www.google.com/maps/search/?api=1&query=Kyoto+Station" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a><div class="tn">JR Haruka Express · 75 Min · ¥3.600</div></div></div>
+      <div class="tr2"><div class="tt">18:15</div><div class="tc">Ankunft KIX<a href="https://www.google.com/maps/search/?api=1&query=Kansai+International+Airport" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a> · Einchecken · Terminal 1 Finnair</div></div>
+      <div class="tr2"><div class="tt"><div class="dot"></div>21:15</div><div class="tc"><strong>Check-in Schluss AY 068 – absolute Deadline!</strong></div></div>
+      <div class="tr2"><div class="tt">22:15</div><div class="tc"><strong>Abflug</strong> KIX → Helsinki · AY 068</div></div>
+    </div>
+    <div class="warn" style="margin:0;border-radius:0;border-left:none;border-right:none;border-bottom:none">Osaka-Besuch: Abfahrt Namba spätestens 16:30 Uhr (Nankai Rapit, 40 Min nach KIX T1).</div>
+  </div>
+</div>
+
+<!-- ADRESSEN -->
+<div class="sec" id="s-ad">
+  <div class="atsec">
+    <div class="athead" style="background:#FAECE7;color:#993C1D">Tokyo</div>
+    <div class="acard"><div class="aname">Senso-ji Temple<a href="https://www.google.com/maps/search/?api=1&query=Senso-ji+Temple+Asakusa+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="aen">Asakusa</div><div class="ajrow"><span class="ajp">浅草寺</span><span class="aaddr">2-3-1 Asakusa, Taito</span></div></div>
+    <div class="acard"><div class="aname">Hoppy Street<a href="https://www.google.com/maps/search/?api=1&query=Hoppy+Street+Asakusa+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="ajrow"><span class="ajp">ホッピー通り</span><span class="aaddr">Asakusa 2, Taito</span></div></div>
+    <div class="acard"><div class="aname">Ueno Park<a href="https://www.google.com/maps/search/?api=1&query=Ueno+Park+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="ajrow"><span class="ajp">上野公園</span><span class="aaddr">Uenokoen, Taito</span></div></div>
+    <div class="acard"><div class="aname">Meiji Shrine<a href="https://www.google.com/maps/search/?api=1&query=Meiji+Jingu+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="ajrow"><span class="ajp">明治神宮</span><span class="aaddr">1-1 Yoyogikamizonocho, Shibuya</span></div></div>
+    <div class="acard"><div class="aname">Takeshita Street<a href="https://www.google.com/maps/search/?api=1&query=Takeshita+Street+Harajuku+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="ajrow"><span class="ajp">竹下通り</span><span class="aaddr">Jingumaecho, Shibuya</span></div></div>
+    <div class="acard"><div class="aname">Godzilla-Kopf / Hotel Gracery<a href="https://www.google.com/maps/search/?api=1&query=Godzilla+Head+Hotel+Gracery+Shinjuku+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="aen">Kabukicho · Aussichtsterrasse 8.OG kostenlos</div><div class="ajrow"><span class="ajp">ゴジラの頭</span><span class="aaddr">1-19-1 Kabukicho, Shinjuku</span></div></div>
+    <div class="acard"><div class="aname">Shibuya Crossing<a href="https://www.google.com/maps/search/?api=1&query=Shibuya+Scramble+Crossing+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="ajrow"><span class="ajp">渋谷スクランブル交差点</span><span class="aaddr">2-2-1 Dogenzaka, Shibuya</span></div></div>
+    <div class="acard"><div class="aname">Shibuya Sky<a href="https://www.google.com/maps/search/?api=1&query=Shibuya+Sky+Scramble+Square+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="ajrow"><span class="ajp">渋谷スカイ</span><span class="aaddr">2-24-12 Shibuya, Shibuya</span></div></div>
+    <div class="acard"><div class="aname">Nonbei Yokocho<a href="https://www.google.com/maps/search/?api=1&query=Nonbei+Yokocho+Shibuya+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="ajrow"><span class="ajp">のんべい横丁</span><span class="aaddr">1-25 Dogenzaka, Shibuya</span></div></div>
+    <div class="acard"><div class="aname">Omoide Yokocho<a href="https://www.google.com/maps/search/?api=1&query=Omoide+Yokocho+Memory+Lane+Shinjuku+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="ajrow"><span class="ajp">思い出横丁</span><span class="aaddr">1-2 Nishishinjuku, Shinjuku</span></div></div>
+    <div class="acard"><div class="aname">Golden Gai<a href="https://www.google.com/maps/search/?api=1&query=Golden+Gai+Shinjuku+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="ajrow"><span class="ajp">新宿ゴールデン街</span><span class="aaddr">1-1 Kabukicho, Shinjuku</span></div></div>
+    <div class="acard"><div class="aname">Shinjuku Batting Center<a href="https://www.google.com/maps/search/?api=1&query=Shinjuku+Batting+Center+Kabukicho+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="aen">Offen bis 04:00 Uhr · nur Bargeld · ¥400/25 Bälle</div><div class="ajrow"><span class="ajp">新宿バッティングセンター</span><span class="aaddr">2-21-13 Kabukicho, Shinjuku</span></div></div>
+    <div class="acard"><div class="aname">Ramen Nagi<a href="https://www.google.com/maps/search/?api=1&query=Ramen+Nagi+Golden+Gai+Shinjuku+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="aen">Late-Night Ramen · 24h geöffnet · Golden Gai</div><div class="ajrow"><span class="ajp">らーめん凪</span><span class="aaddr">1-1-10 Kabukicho, Shinjuku</span></div></div>
+    <div class="acard"><div class="aname">teamLab Planets<a href="https://www.google.com/maps/search/?api=1&query=teamLab+Planets+Toyosu+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="ajrow"><span class="ajp">チームラボプラネッツ</span><span class="aaddr">6-1-16 Toyosu, Koto</span></div></div>
+    <div class="acard"><div class="aname">DiverCity / Gundam<a href="https://www.google.com/maps/search/?api=1&query=DiverCity+Tokyo+Odaiba" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="ajrow"><span class="ajp">ダイバーシティ東京</span><span class="aaddr">1-1-10 Aomi, Koto</span></div></div>
+    <div class="acard"><div class="aname">Tokyo SkyTree<a href="https://www.google.com/maps/search/?api=1&query=Tokyo+SkyTree+Oshiage" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="ajrow"><span class="ajp">東京スカイツリー</span><span class="aaddr">1-1-2 Oshiage, Sumida</span></div></div>
+    <div class="acard"><div class="aname">Akihabara<a href="https://www.google.com/maps/search/?api=1&query=Akihabara+Electric+Town+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="ajrow"><span class="ajp">秋葉原</span><span class="aaddr">Sotokanda, Chiyoda</span></div></div>
+    <div class="acard"><div class="aname">Pokémon Center DX<a href="https://www.google.com/maps/search/?api=1&query=Pokemon+Center+DX+Nihonbashi+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="aen">Nihonbashi Takashimaya 6F</div><div class="ajrow"><span class="ajp">ポケモンセンタートウキョーDX</span><span class="aaddr">2-4-1 Nihonbashi, Chuo</span></div></div>
+    <div class="acard"><div class="aname">Imperial Palace East Garden<a href="https://www.google.com/maps/search/?api=1&query=Imperial+Palace+East+Garden+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="ajrow"><span class="ajp">皇居東御苑</span><span class="aaddr">1-1 Chiyoda, Chiyoda</span></div></div>
+    <div class="acard"><div class="aname">Tsukiji Outer Market<a href="https://www.google.com/maps/search/?api=1&query=Tsukiji+Outer+Market+Tokyo" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="ajrow"><span class="ajp">築地場外市場</span><span class="aaddr">4-16-2 Tsukiji, Chuo</span></div></div>
+  </div>
+  <div class="atsec">
+    <div class="athead" style="background:#E1F5EE;color:#0F6E56">Hakone</div>
+    <div class="acard"><div class="aname">Hakonemori Okada<a href="https://www.google.com/maps/search/?api=1&query=Hakonemori+Okada+Hakone" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="ajrow"><span class="ajp">箱根森の岡田</span><span class="aaddr">191 Yumoto, Hakone</span></div></div>
+    <div class="acard"><div class="aname">Hakone Open Air Museum<a href="https://www.google.com/maps/search/?api=1&query=Hakone+Open+Air+Museum" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="ajrow"><span class="ajp">箱根彫刻の森美術館</span><span class="aaddr">1121 Ninotaira, Hakone</span></div></div>
+    <div class="acard"><div class="aname">Owakudani<a href="https://www.google.com/maps/search/?api=1&query=Owakudani+Hakone" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="ajrow"><span class="ajp">大涌谷</span><span class="aaddr">Sengokuhara, Hakone</span></div></div>
+    <div class="acard"><div class="aname">Lake Ashi<a href="https://www.google.com/maps/search/?api=1&query=Lake+Ashi+Ashinoko+Hakone" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="ajrow"><span class="ajp">芦ノ湖</span><span class="aaddr">Hakone, Kanagawa</span></div></div>
+    <div class="acard"><div class="aname">Hakone Shrine<a href="https://www.google.com/maps/search/?api=1&query=Hakone+Shrine+Jinja" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="ajrow"><span class="ajp">箱根神社</span><span class="aaddr">80-1 Motohakone, Hakone</span></div></div>
+  </div>
+  <div class="atsec">
+    <div class="athead" style="background:#FAEEDA;color:#854F0B">Kyoto</div>
+    <div class="acard"><div class="aname">Hotel Elcient<a href="https://www.google.com/maps/search/?api=1&query=Hotel+Elcient+Kyoto" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="ajrow"><span class="ajp">ホテルエルシエント京都</span><span class="aaddr">68 Higashishiokoji, Shimogyo</span></div></div>
+    <div class="acard"><div class="aname">Fushimi Inari Taisha<a href="https://www.google.com/maps/search/?api=1&query=Fushimi+Inari+Taisha+Kyoto" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="ajrow"><span class="ajp">伏見稲荷大社</span><span class="aaddr">68 Fukakusa Yabunouchicho, Fushimi</span></div></div>
+    <div class="acard"><div class="aname">Kiyomizudera<a href="https://www.google.com/maps/search/?api=1&query=Kiyomizudera+Temple+Kyoto" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="ajrow"><span class="ajp">清水寺</span><span class="aaddr">1-294 Kiyomizu, Higashiyama</span></div></div>
+    <div class="acard"><div class="aname">Yasaka Pagoda<a href="https://www.google.com/maps/search/?api=1&query=Yasaka+Pagoda+Kyoto" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="ajrow"><span class="ajp">八坂の塔</span><span class="aaddr">388 Yasaka Shimokawaracho</span></div></div>
+    <div class="acard"><div class="aname">Gion Hanamikoji<a href="https://www.google.com/maps/search/?api=1&query=Gion+Hanamikoji+Street+Kyoto" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="ajrow"><span class="ajp">花見小路通り</span><span class="aaddr">Gion, Higashiyama</span></div></div>
+    <div class="acard"><div class="aname">Pontocho<a href="https://www.google.com/maps/search/?api=1&query=Pontocho+Alley+Kyoto" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="ajrow"><span class="ajp">先斗町</span><span class="aaddr">Pontocho, Nakagyo</span></div></div>
+    <div class="acard"><div class="aname">Nishiki Market<a href="https://www.google.com/maps/search/?api=1&query=Nishiki+Market+Kyoto" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="ajrow"><span class="ajp">錦市場</span><span class="aaddr">Nishikikoji, Nakagyo</span></div></div>
+    <div class="acard"><div class="aname">Arashiyama Bamboo Grove<a href="https://www.google.com/maps/search/?api=1&query=Arashiyama+Bamboo+Grove+Kyoto" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="ajrow"><span class="ajp">嵐山竹林</span><span class="aaddr">Sagaogurayama, Ukyo</span></div></div>
+    <div class="acard"><div class="aname">Tenryu-ji<a href="https://www.google.com/maps/search/?api=1&query=Tenryuji+Temple+Arashiyama" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="ajrow"><span class="ajp">天龍寺</span><span class="aaddr">68 Sagatenryuji, Ukyo</span></div></div>
+    <div class="acard"><div class="aname">Kinkakuji<a href="https://www.google.com/maps/search/?api=1&query=Kinkakuji+Golden+Pavilion+Kyoto" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="ajrow"><span class="ajp">金閣寺</span><span class="aaddr">1 Kinkakujicho, Kita</span></div></div>
+    <div class="acard"><div class="aname">Ryoanji<a href="https://www.google.com/maps/search/?api=1&query=Ryoanji+Zen+Garden+Kyoto" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="ajrow"><span class="ajp">龍安寺</span><span class="aaddr">13 Ryoanjigoranocho, Ukyo</span></div></div>
+    <div class="acard"><div class="aname">Nijo Castle<a href="https://www.google.com/maps/search/?api=1&query=Nijo+Castle+Kyoto" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="ajrow"><span class="ajp">二条城</span><span class="aaddr">541 Nijojocho, Nakagyo</span></div></div>
+  </div>
+  <div class="atsec">
+    <div class="athead" style="background:#EEEDFE;color:#3C3489">Nara</div>
+    <div class="acard"><div class="aname">Nara Park<a href="https://www.google.com/maps/search/?api=1&query=Nara+Park+Japan" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="ajrow"><span class="ajp">奈良公園</span><span class="aaddr">Zoshicho, Nara</span></div></div>
+    <div class="acard"><div class="aname">Todai-ji<a href="https://www.google.com/maps/search/?api=1&query=Todaiji+Temple+Nara" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="ajrow"><span class="ajp">東大寺</span><span class="aaddr">406-1 Zoshicho, Nara</span></div></div>
+    <div class="acard"><div class="aname">Kasuga Grand Shrine<a href="https://www.google.com/maps/search/?api=1&query=Kasuga+Taisha+Shrine+Nara" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="ajrow"><span class="ajp">春日大社</span><span class="aaddr">160 Kasuganocho, Nara</span></div></div>
+  </div>
+  <div class="atsec">
+    <div class="athead" style="background:#FBEAF0;color:#993556">Uji</div>
+    <div class="acard"><div class="aname">Byodo-in<a href="https://www.google.com/maps/search/?api=1&query=Byodoin+Phoenix+Hall+Uji+Kyoto" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="aen">Phoenix Hall</div><div class="ajrow"><span class="ajp">平等院</span><span class="aaddr">116 Uji Renge, Uji</span></div></div>
+    <div class="acard"><div class="aname">Nakamura Tokichi Honten<a href="https://www.google.com/maps/search/?api=1&query=Nakamura+Tokichi+Honten+Uji+Kyoto" target="_blank" class="ml"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></a></div><div class="aen">Matcha Tea House</div><div class="ajrow"><span class="ajp">中村藤吉本店</span><span class="aaddr">10 Ichiban, Uji</span></div></div>
+  </div>
+</div>
+
+<!-- TRANSPORT -->
+<div class="sec" id="s-tr">
+  <div class="stitle">Wichtige Verbindungen</div>
+  <div class="trt-wrap">
+    <table class="trt">
+      <thead><tr><th>Strecke</th><th>Mittel</th><th>Zeit</th><th>Preis</th></tr></thead>
+      <tbody>
+        <tr><td>Haneda T3 → Ueno</td><td>Keikyu + Asakusa</td><td>50 Min</td><td>¥620</td></tr>
+        <tr><td>Shinjuku → Hakone-Yumoto</td><td>Odakyu Romancecar</td><td>85 Min</td><td>¥2.470+</td></tr>
+        <tr><td>Hakone-Yumoto → Odawara</td><td>Hakone Tozan</td><td>15 Min</td><td>¥310</td></tr>
+        <tr class="hrow"><td><strong style="font-weight:500">Odawara → Kyoto</strong></td><td><strong style="font-weight:500">Shinkansen 10:35</strong></td><td><strong style="font-weight:500">~55 Min</strong></td><td><strong style="font-weight:500">¥7.810</strong></td></tr>
+        <tr><td>Kyoto → Kansai Airport</td><td>JR Haruka Express</td><td>75 Min</td><td>¥3.600</td></tr>
+        <tr><td>Kyoto → Nara</td><td>JR Nara Linie</td><td>45 Min</td><td>¥730</td></tr>
+        <tr><td>Kyoto → Uji</td><td>JR Nara Linie</td><td>20 Min</td><td>¥240</td></tr>
+        <tr><td>Kyoto → Arashiyama</td><td>JR Sagano</td><td>25 Min</td><td>¥240</td></tr>
+        <tr><td>Kyoto → Fushimi Inari</td><td>JR Nara → Inari</td><td>15 Min</td><td>¥190</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="stitle">Packliste</div>
+  <div id="pack-list" style="border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:24px"></div>
+
+  <div class="stitle">Wichtige japanische Sätze</div>
+  <div style="border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;background:var(--color-background-secondary);border-bottom:1px solid var(--color-border-secondary)">
+      <div style="padding:7px 10px;font-size:10px;font-weight:500;color:var(--color-text-secondary)">Deutsch</div>
+      <div style="padding:7px 10px;font-size:10px;font-weight:500;color:var(--color-text-secondary)">Japanisch</div>
+      <div style="padding:7px 10px;font-size:10px;font-weight:500;color:var(--color-text-secondary)">Aussprache</div>
+    </div>
+    <div id="phrases"></div>
+  </div>
+</div>
+
+</div>
+
+<script>
+var tabs=document.querySelectorAll('.tab');
+var secs=document.querySelectorAll('.sec');
+tabs.forEach(function(t){
+  t.addEventListener('click',function(){
+    tabs.forEach(function(x){x.classList.remove('on')});
+    secs.forEach(function(x){x.classList.remove('on')});
+    t.classList.add('on');
+    document.getElementById('s-'+t.dataset.t).classList.add('on');
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+});
+
+var packData=[
+  {cat:"Dokumente & Geld",items:["Reisepass (gültig!)","Flugtickets ausdrucken / digital","Hotelbestätigungen","Reiseversicherung","Kreditkarte & Bargeld (€200 zum Wechseln)","Notfallnummern notiert"]},
+  {cat:"Technik",items:["Handy + Ladekabel","Powerbank","Reiseadapter (Japan: Typ A)","Kopfhörer","Kamera + Ladekabel / Akkus"]},
+  {cat:"Kleidung (April: 10–20°C)",items:["Leichte Jacke / Windjacke","Pullover / Fleece für Hakone","T-Shirts (5–6 Stück)","Lange Hosen (2–3)","Bequeme Laufschuhe (täglich 15–20km!)","Sandalen / leichte Schuhe abends","Regenjacke oder Schirm","Socken extra (teamLab: barfuß!)","Unterwäsche"]},
+  {cat:"Hygiene & Gesundheit",items:["Sonnencreme (in Japan teuer)","Schmerzmittel / Reiseapotheke","Pflaster (viel Laufen!)","Feuchttücher / Taschentücher","Handdesinfektionsmittel","Persönliche Medikamente"]},
+  {cat:"Praktisches",items:["Kleiner Tagesrucksack","Wiederverwendbare Tasche","Wasserflasche","Nackenkissen (13h Flug!)","Augenmaske / Ohrstöpsel für Flug","Regenschirm (kompakt)"]}
+];
+var phraseData=[
+  ["Hallo / Guten Tag","こんにちは","Konnichiwa"],
+  ["Danke schön","ありがとうございます","Arigatō gozaimasu"],
+  ["Bitte / Hier bitte","どうぞ","Dōzo"],
+  ["Entschuldigung","すみません","Sumimasen"],
+  ["Ich verstehe nicht","わかりません","Wakarimasen"],
+  ["Wo ist...?","...はどこですか？","... wa doko desu ka?"],
+  ["Wie viel kostet das?","いくらですか？","Ikura desu ka?"],
+  ["Lecker!","おいしい","Oishii!"],
+  ["Die Rechnung bitte","お会計お願いします","Okaikei onegaishimasu"],
+  ["Bahnhof","駅","Eki"],
+  ["Toilette","トイレ","Toire"],
+  ["Hilfe!","助けてください！","Tasukete kudasai!"],
+  ["Guten Morgen","おはようございます","Ohayō gozaimasu"],
+  ["Gute Nacht","おやすみなさい","Oyasumi nasai"],
+  ["Prost!","乾杯！","Kanpai!"],
+  ["Ich hätte gerne...","...をください","... o kudasai"],
+  ["Kein Fleisch bitte","肉なしでお願いします","Niku nashi de onegaishimasu"],
+  ["Einmal bitte (Batting)","一回お願いします","Ikkai onegaishimasu"]
+];
+
+var checks={};
+var total=0;
+packData.forEach(function(c){total+=c.items.length});
+
+function render(){
+  var done=Object.keys(checks).filter(function(k){return checks[k]}).length;
+  var pct=Math.round(done/total*100);
+  var html='<div class="pack-prog"><span style="font-size:12px;color:var(--color-text-secondary);white-space:nowrap">'+done+' / '+total+'</span><div class="pack-bar-bg"><div class="pack-bar-fill" style="width:'+pct+'%"></div></div><span style="font-size:12px;font-weight:500;color:#1D9E75;white-space:nowrap">'+pct+'%</span></div>';
+  packData.forEach(function(cat){
+    html+='<div class="pack-cat">'+cat.cat+'</div>';
+    cat.items.forEach(function(item,i){
+      var id=cat.cat+i;
+      var d=checks[id]?'done':'';
+      html+='<div class="pack-item" onclick="toggle(\''+id+'\')">'
+        +'<div class="pack-cb '+d+'" id="cb_'+id+'"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>'
+        +'<div class="pack-text '+d+'" id="pt_'+id+'">'+item+'</div>'
+        +'</div>';
+    });
+  });
+  document.getElementById('pack-list').innerHTML=html;
+}
+window.toggle=function(id){checks[id]=!checks[id];render();};
+
+var ph='';
+phraseData.forEach(function(r){
+  ph+='<div class="phrase-row"><div>'+r[0]+'</div><div>'+r[1]+'</div><div>'+r[2]+'</div></div>';
+});
+document.getElementById('phrases').innerHTML=ph;
+render();
+</script>
